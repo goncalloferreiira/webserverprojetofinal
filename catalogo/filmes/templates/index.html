@@ -10,16 +10,15 @@
 
     <nav class="navbar navbar-dark bg-dark mb-5 shadow">
         <div class="container">
-            <span class="navbar-brand mb-0 h1">🎬 O Meu Catálogo</span>
+            <span class="navbar-brand mb-0 h1">Catálogo de filmes por Gonçalo Ferreira e Miguel Paranhos</span>
         </div>
     </nav>
 
     <div class="container">
-        
         <div class="p-5 mb-5 bg-white rounded-3 shadow-sm border">
             <div class="container-fluid py-3">
-                <h1 class="display-5 fw-bold text-primary">Bem-vindo ao Catálogo!</h1>
-                <p class="col-md-8 fs-5 text-secondary">O nosso site já tem estilo. Usa o Bootstrap para adicionar botões, cartões e grelhas de forma super fácil.</p>
+                <h1 class="display-5 fw-bold text-primary">Seja bem-vindo ao nosso catálogo!</h1>
+                <p class="col-md-8 fs-5 text-secondary">Veja os filmes e deixa um comentário.</p>
                 <a href="#lista-filmes" class="btn btn-primary btn-lg shadow-sm">Explorar Filmes</a>
             </div>
         </div>
@@ -31,38 +30,37 @@
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm border-0 overflow-hidden">
                     
-                    <img src="{% if filme.url_poster %}{{ filme.url_poster }}{% else %}https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500{% endif %}" 
-                         class="card-img-top" 
-                         alt="{{ filme.titulo }}" 
-                         style="height: 400px; object-fit: cover;">
+                    <a href="{% url 'detalhe_filme' filme.id %}">
+                        <img src="{% if filme.url_poster %}{{ filme.url_poster }}{% else %}https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500{% endif %}" 
+                             class="card-img-top" 
+                             alt="{{ filme.titulo }}" 
+                             style="height: 400px; object-fit: cover;">
+                    </a>
 
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title text-dark fw-bold mb-1">{{ filme.titulo }}</h5>
-                        <span class="badge bg-secondary align-self-start mb-3">{{ filme.ano }}</span>
-                        <p class="card-text text-secondary flex-grow-1">{{ filme.descricao }}</p>
+                        <h5 class="card-title mb-1">
+                            <a href="{% url 'detalhe_filme' filme.id %}" class="text-decoration-none text-dark fw-bold">{{ filme.titulo }}</a>
+                        </h5>
                         
-                        {% if filme.url_video %}
-                            <div class="mt-3 border shadow-sm">
-                                <div class="ratio ratio-16x9">
-                                    <iframe src="{{ filme.url_video }}" width="100%" height="100%" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                        {% else %}
-                            <button class="btn btn-outline-secondary w-100 mt-3" disabled>Sem link de transmissão</button>
-                        {% endif %}
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge bg-secondary">{{ filme.ano }}</span>
+                            <span class="text-warning ms-3 fw-bold fs-5">⭐ {{ filme.media_notas|floatformat:"-1" }}/5</span>
+                        </div>
+                        
+                        <p class="card-text text-secondary flex-grow-1">{{ filme.descricao|truncatewords:20 }}</p>
+                        
+                        <a href="{% url 'detalhe_filme' filme.id %}" class="btn btn-outline-primary w-100 mt-3 fw-bold">Ver o filme</a>
                     </div>
                 </div>
             </div>
-            
             {% empty %}
             <div class="col-12 text-center">
                 <div class="alert alert-warning shadow-sm" role="alert">
-                    Ainda não há filmes inseridos! Vai a <strong>localhost:8000/admin</strong> para adicionar o primeiro.
+                    Ainda não há filmes inseridos!
                 </div>
             </div>
             {% endfor %}
         </div>
     </div>
-
 </body>
 </html>
