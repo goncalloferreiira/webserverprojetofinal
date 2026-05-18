@@ -1,5 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+
+from .models import Filme 
+
 
 def home(request):
-    return HttpResponse("<h1>catalogo de filmes antigos</h1>")
+    
+    filmes = Filme.objects.all()
+    
+
+    return render(request, 'index.html', {'filmes': filmes})
